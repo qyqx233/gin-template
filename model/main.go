@@ -2,10 +2,11 @@ package model
 
 import (
 	"gin-template/common"
+	"os"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"os"
 )
 
 var DB *gorm.DB
@@ -62,6 +63,9 @@ func InitDB() (err error) {
 		}
 		err = db.AutoMigrate(&Option{})
 		if err != nil {
+			return err
+		}
+		if err = db.AutoMigrate(&Translate{}); err != nil {
 			return err
 		}
 		err = createRootAccountIfNeed()

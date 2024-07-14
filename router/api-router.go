@@ -3,6 +3,7 @@ package router
 import (
 	"gin-template/controller"
 	"gin-template/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +21,12 @@ func SetApiRouter(router *gin.Engine) {
 		apiRouter.GET("/oauth/wechat", middleware.CriticalRateLimit(), controller.WeChatAuth)
 		apiRouter.GET("/oauth/wechat/bind", middleware.CriticalRateLimit(), middleware.UserAuth(), controller.WeChatBind)
 		apiRouter.GET("/oauth/email/bind", middleware.CriticalRateLimit(), middleware.UserAuth(), controller.EmailBind)
+
+		zRouter := apiRouter.Group("/z")
+		{
+			zRouter.POST("/translate", controller.NewTranslate)
+			zRouter.GET("/translate/query", controller.QueryTranslate)
+		}
 
 		userRoute := apiRouter.Group("/user")
 		{

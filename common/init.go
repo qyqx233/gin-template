@@ -6,10 +6,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var (
-	Port         = flag.Int("port", 3000, "the listening port")
+	Port         = flag.Int("port", 19800, "the listening port")
 	PrintVersion = flag.Bool("version", false, "print version and exit")
 	PrintHelp    = flag.Bool("help", false, "print help and exit")
 	LogDir       = flag.String("log-dir", "", "specify the log directory")
@@ -26,6 +27,11 @@ func printHelp() {
 }
 
 func init() {
+	for _, arg := range os.Args {
+		if strings.Contains(arg, "-test.paniconexit0") {
+			return
+		}
+	}
 	flag.Parse()
 
 	if *PrintVersion {
